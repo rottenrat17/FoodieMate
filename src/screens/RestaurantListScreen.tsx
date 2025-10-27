@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   RefreshControl,
+  Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Restaurant } from '../types/Restaurant';
@@ -58,24 +59,34 @@ const RestaurantListScreen: React.FC<RestaurantListScreenProps> = ({ navigation 
   };
 
   const renderRestaurantItem = ({ item }: { item: Restaurant }) => (
-    <TouchableOpacity
-      style={styles.restaurantItem}
-      onPress={() => navigation.navigate('RestaurantDetails', { restaurant: item })}
-      onLongPress={() => navigation.navigate('AddEditRestaurant', { restaurant: item })}
-    >
-      <View style={styles.restaurantInfo}>
-        <Text style={styles.restaurantName}>{item.name}</Text>
-        <View style={styles.ratingContainer}>
-          <View style={styles.starsContainer}>
-            {renderStars(item.rating)}
+    <View style={styles.restaurantItemContainer}>
+      <TouchableOpacity
+        style={styles.restaurantItem}
+        onPress={() => navigation.navigate('RestaurantDetails', { restaurant: item })}
+        onLongPress={() => navigation.navigate('AddEditRestaurant', { restaurant: item })}
+      >
+        <View style={styles.restaurantInfo}>
+          <Text style={styles.restaurantName}>{item.name}</Text>
+          <View style={styles.ratingContainer}>
+            <View style={styles.starsContainer}>
+              {renderStars(item.rating)}
+            </View>
+            <Text style={styles.ratingText}>{item.rating}/5</Text>
           </View>
-          <Text style={styles.ratingText}>{item.rating}/5</Text>
+          <Text style={styles.restaurantAddress}>{item.address}</Text>
+          <Text style={styles.restaurantTags}>{item.tags.join(', ')}</Text>
         </View>
-        <Text style={styles.restaurantAddress}>{item.address}</Text>
-        <Text style={styles.restaurantTags}>{item.tags.join(', ')}</Text>
-      </View>
-      <Ionicons name="chevron-forward" size={20} color="#CCCCCC" />
-    </TouchableOpacity>
+        <Ionicons name="chevron-forward" size={20} color="#CCCCCC" />
+      </TouchableOpacity>
+      {Platform.OS === 'web' && (
+        <TouchableOpacity
+          style={styles.editButtonWeb}
+          onPress={() => navigation.navigate('AddEditRestaurant', { restaurant: item })}
+        >
+          <Ionicons name="create-outline" size={18} color="#FF6B35" />
+        </TouchableOpacity>
+      )}
+    </View>
   );
 
   return (
@@ -105,6 +116,7 @@ const RestaurantListScreen: React.FC<RestaurantListScreenProps> = ({ navigation 
         renderItem={renderRestaurantItem}
         keyExtractor={(item) => item.id}
         style={styles.list}
+        contentContainerStyle={{ paddingBottom: 20 }}
         refreshControl={
           <RefreshControl refreshing={loading} onRefresh={fetchRestaurants} />
         }
@@ -169,17 +181,33 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#333333',
   },
-  list: {
+  listWrapper: {
     flex: 1,
     paddingHorizontal: 20,
   },
+  list: {
+    flex: 1,
+  },
+  restaurantItemContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+    gap: 8,
+  },
   restaurantItem: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
     padding: 15,
-    marginBottom: 10,
     borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+  },
+  editButtonWeb: {
+    padding: 8,
+    backgroundColor: '#F0F0F0',
+    borderRadius: 8,
     borderWidth: 1,
     borderColor: '#E0E0E0',
   },

@@ -1,0 +1,185 @@
+[1mdiff --git a/src/screens/RestaurantListScreen.tsx b/src/screens/RestaurantListScreen.tsx[m
+[1mindex 23333c9..c4b1417 100644[m
+[1m--- a/src/screens/RestaurantListScreen.tsx[m
+[1m+++ b/src/screens/RestaurantListScreen.tsx[m
+[36m@@ -7,6 +7,7 @@[m [mimport {[m
+   TextInput,[m
+   TouchableOpacity,[m
+   RefreshControl,[m
+[32m+[m[32m  Platform,[m
+ } from 'react-native';[m
+ import { Ionicons } from '@expo/vector-icons';[m
+ import { Restaurant } from '../types/Restaurant';[m
+[36m@@ -21,7 +22,6 @@[m [mconst RestaurantListScreen: React.FC<RestaurantListScreenProps> = ({ navigation[m
+   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);[m
+   const [loading, setLoading] = useState(true);[m
+ [m
+[31m-  // Load restaurants when screen comes into focus[m
+   const fetchRestaurants = async () => {[m
+     setLoading(true);[m
+     const data = await loadRestaurants();[m
+[36m@@ -37,7 +37,6 @@[m [mconst RestaurantListScreen: React.FC<RestaurantListScreenProps> = ({ navigation[m
+     return unsubscribe;[m
+   }, [navigation]);[m
+ [m
+[31m-  // Filter restaurants based on search query[m
+   const filteredRestaurants = restaurants.filter(restaurant =>[m
+     restaurant.name.toLowerCase().includes(searchQuery.toLowerCase())[m
+   );[m
+[36m@@ -58,24 +57,34 @@[m [mconst RestaurantListScreen: React.FC<RestaurantListScreenProps> = ({ navigation[m
+   };[m
+ [m
+   const renderRestaurantItem = ({ item }: { item: Restaurant }) => ([m
+[31m-    <TouchableOpacity[m
+[31m-      style={styles.restaurantItem}[m
+[31m-      onPress={() => navigation.navigate('RestaurantDetails', { restaurant: item })}[m
+[31m-      onLongPress={() => navigation.navigate('AddEditRestaurant', { restaurant: item })}[m
+[31m-    >[m
+[31m-      <View style={styles.restaurantInfo}>[m
+[31m-        <Text style={styles.restaurantName}>{item.name}</Text>[m
+[31m-        <View style={styles.ratingContainer}>[m
+[31m-          <View style={styles.starsContainer}>[m
+[31m-            {renderStars(item.rating)}[m
+[32m+[m[32m    <View style={styles.restaurantItemContainer}>[m
+[32m+[m[32m      <TouchableOpacity[m
+[32m+[m[32m        style={styles.restaurantItem}[m
+[32m+[m[32m        onPress={() => navigation.navigate('RestaurantDetails', { restaurant: item })}[m
+[32m+[m[32m        onLongPress={() => navigation.navigate('AddEditRestaurant', { restaurant: item })}[m
+[32m+[m[32m      >[m
+[32m+[m[32m        <View style={styles.restaurantInfo}>[m
+[32m+[m[32m          <Text style={styles.restaurantName}>{item.name}</Text>[m
+[32m+[m[32m          <View style={styles.ratingContainer}>[m
+[32m+[m[32m            <View style={styles.starsContainer}>[m
+[32m+[m[32m              {renderStars(item.rating)}[m
+[32m+[m[32m            </View>[m
+[32m+[m[32m            <Text style={styles.ratingText}>{item.rating}/5</Text>[m
+           </View>[m
+[31m-          <Text style={styles.ratingText}>{item.rating}/5</Text>[m
+[32m+[m[32m          <Text style={styles.restaurantAddress}>{item.address}</Text>[m
+[32m+[m[32m          <Text style={styles.restaurantTags}>{item.tags.join(', ')}</Text>[m
+         </View>[m
+[31m-        <Text style={styles.restaurantAddress}>{item.address}</Text>[m
+[31m-        <Text style={styles.restaurantTags}>{item.tags.join(', ')}</Text>[m
+[31m-      </View>[m
+[31m-      <Ionicons name="chevron-forward" size={20} color="#CCCCCC" />[m
+[31m-    </TouchableOpacity>[m
+[32m+[m[32m        <Ionicons name="chevron-forward" size={20} color="#CCCCCC" />[m
+[32m+[m[32m      </TouchableOpacity>[m
+[32m+[m[32m      {Platform.OS === 'web' && ([m
+[32m+[m[32m        <TouchableOpacity[m
+[32m+[m[32m          style={styles.editButtonWeb}[m
+[32m+[m[32m          onPress={() => navigation.navigate('AddEditRestaurant', { restaurant: item })}[m
+[32m+[m[32m        >[m
+[32m+[m[32m          <Ionicons name="create-outline" size={18} color="#FF6B35" />[m
+[32m+[m[32m        </TouchableOpacity>[m
+[32m+[m[32m      )}[m
+[32m+[m[32m    </View>[m
+   );[m
+ [m
+   return ([m
+[36m@@ -105,6 +114,7 @@[m [mconst RestaurantListScreen: React.FC<RestaurantListScreenProps> = ({ navigation[m
+         renderItem={renderRestaurantItem}[m
+         keyExtractor={(item) => item.id}[m
+         style={styles.list}[m
+[32m+[m[32m        contentContainerStyle={{ paddingBottom: 20 }}[m
+         refreshControl={[m
+           <RefreshControl refreshing={loading} onRefresh={fetchRestaurants} />[m
+         }[m
+[36m@@ -169,20 +179,36 @@[m [mconst styles = StyleSheet.create({[m
+     fontSize: 16,[m
+     color: '#333333',[m
+   },[m
+[31m-  list: {[m
+[32m+[m[32m  listWrapper: {[m
+     flex: 1,[m
+     paddingHorizontal: 20,[m
+   },[m
+[32m+[m[32m  list: {[m
+[32m+[m[32m    flex: 1,[m
+[32m+[m[32m  },[m
+[32m+[m[32m  restaurantItemContainer: {[m
+[32m+[m[32m    flexDirection: 'row',[m
+[32m+[m[32m    alignItems: 'center',[m
+[32m+[m[32m    marginBottom: 10,[m
+[32m+[m[32m    gap: 8,[m
+[32m+[m[32m  },[m
+   restaurantItem: {[m
+[32m+[m[32m    flex: 1,[m
+     flexDirection: 'row',[m
+     alignItems: 'center',[m
+     backgroundColor: '#FFFFFF',[m
+     padding: 15,[m
+[31m-    marginBottom: 10,[m
+     borderRadius: 10,[m
+     borderWidth: 1,[m
+     borderColor: '#E0E0E0',[m
+   },[m
+[32m+[m[32m  editButtonWeb: {[m
+[32m+[m[32m    padding: 8,[m
+[32m+[m[32m    backgroundColor: '#F0F0F0',[m
+[32m+[m[32m    borderRadius: 8,[m
+[32m+[m[32m    borderWidth: 1,[m
+[32m+[m[32m    borderColor: '#E0E0E0',[m
+[32m+[m[32m  },[m
+   restaurantInfo: {[m
+     flex: 1,[m
+   },[m
+[1mdiff --git a/src/services/restaurantService.ts b/src/services/restaurantService.ts[m
+[1mindex fcc3a4f..309ae84 100644[m
+[1m--- a/src/services/restaurantService.ts[m
+[1m+++ b/src/services/restaurantService.ts[m
+[36m@@ -4,14 +4,12 @@[m [mimport { dummyRestaurants } from '../data/dummyData';[m
+ [m
+ const STORAGE_KEY = '@restaurants_data';[m
+ [m
+[31m-// Load restaurants from storage or return defaults[m
+ export const loadRestaurants = async (): Promise<Restaurant[]> => {[m
+   try {[m
+     const data = await AsyncStorage.getItem(STORAGE_KEY);[m
+     if (data) {[m
+       return JSON.parse(data);[m
+     }[m
+[31m-    // If no data exists, initialize with dummy data[m
+     await saveRestaurants(dummyRestaurants);[m
+     return dummyRestaurants;[m
+   } catch (error) {[m
+[36m@@ -20,7 +18,6 @@[m [mexport const loadRestaurants = async (): Promise<Restaurant[]> => {[m
+   }[m
+ };[m
+ [m
+[31m-// Save restaurants to storage[m
+ export const saveRestaurants = async (restaurants: Restaurant[]): Promise<void> => {[m
+   try {[m
+     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(restaurants));[m
+[36m@@ -29,7 +26,6 @@[m [mexport const saveRestaurants = async (restaurants: Restaurant[]): Promise<void>[m
+   }[m
+ };[m
+ [m
+[31m-// Add a new restaurant[m
+ export const addRestaurant = async (restaurant: Restaurant): Promise<void> => {[m
+   try {[m
+     const restaurants = await loadRestaurants();[m
+[36m@@ -40,7 +36,6 @@[m [mexport const addRestaurant = async (restaurant: Restaurant): Promise<void> => {[m
+   }[m
+ };[m
+ [m
+[31m-// Update an existing restaurant[m
+ export const updateRestaurant = async (updatedRestaurant: Restaurant): Promise<void> => {[m
+   try {[m
+     const restaurants = await loadRestaurants();[m
+[36m@@ -54,7 +49,6 @@[m [mexport const updateRestaurant = async (updatedRestaurant: Restaurant): Promise<v[m
+   }[m
+ };[m
+ [m
+[31m-// Delete a restaurant[m
+ export const deleteRestaurant = async (id: string): Promise<void> => {[m
+   try {[m
+     const restaurants = await loadRestaurants();[m
+[36m@@ -65,7 +59,6 @@[m [mexport const deleteRestaurant = async (id: string): Promise<void> => {[m
+   }[m
+ };[m
+ [m
+[31m-// Get a single restaurant by ID[m
+ export const getRestaurantById = async (id: string): Promise<Restaurant | undefined> => {[m
+   try {[m
+     const restaurants = await loadRestaurants();[m
