@@ -55,5 +55,38 @@ export const dummyRestaurants: Restaurant[] = [
     rating: 5,
     latitude: 43.6629,
     longitude: -79.4107
+  },
+  {
+    id: '6',
+    name: 'The Coffee House',
+    address: '890 Dundas Street West, Toronto, ON',
+    phone: '(416) 555-2211',
+    description: 'Artisanal coffee shop serving specialty brews, fresh pastries, and light brunch options in a cozy atmosphere.',
+    tags: ['Coffee', 'Breakfast', 'Casual'],
+    rating: 4,
+    latitude: 43.6500,
+    longitude: -79.4000
+  },
+  {
+    id: '7',
+    name: 'Mama\'s Kitchen',
+    address: '567 Spadina Avenue, Toronto, ON',
+    phone: '(416) 555-8877',
+    description: 'Comfort food restaurant featuring homemade dishes, soups, and family-style portions. Perfect for hearty meals.',
+    tags: ['Comfort', 'Family', 'Casual'],
+    rating: 4,
+    latitude: 43.6550,
+    longitude: -79.4000
+  },
+  {
+    id: '8',
+    name: 'Dragon Express',
+    address: '234 Bay Street, Toronto, ON',
+    phone: '(416) 555-4455',
+    description: 'Authentic Chinese cuisine with dim sum, stir-fries, and traditional dishes. Great for groups.',
+    tags: ['Chinese', 'Asian', 'Group'],
+    rating: 4,
+    latitude: 43.6535,
+    longitude: -79.3800
   }
 ];

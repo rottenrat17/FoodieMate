@@ -47,13 +47,32 @@ const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
           <Text style={styles.featureText}>• Rate restaurants (1-5 stars)</Text>
           <Text style={styles.featureText}>• Search restaurants by name</Text>
           <Text style={styles.featureText}>• View restaurant details</Text>
+          <Text style={styles.featureText}>• Edit and delete restaurants</Text>
+          <Text style={styles.featureText}>• Data persistence with local storage</Text>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Group Members</Text>
+          <Text style={styles.sectionText}>
+            Pratik Pokhrel
+          </Text>
+          <Text style={styles.sectionText}>
+            Khalid Wasim
+          </Text>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Contributions</Text>
+          <Text style={styles.featureText}>• Pratik: Main functionality, CRUD operations, data persistence</Text>
+          <Text style={styles.featureText}>• Khalid: UI improvements, documentation, additional features</Text>
         </View>
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Course Information</Text>
           <Text style={styles.sectionText}>
             COMP 3074 - Mobile Application Development
-            Group: G-22
+            {'\n'}Group: G-22
+            {'\n'}George Brown College
           </Text>
         </View>
       </ScrollView>
