@@ -1,20 +1,52 @@
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+
+import SplashScreen from './src/screens/SplashScreen';
+import RestaurantListScreen from './src/screens/RestaurantListScreen';
+import RestaurantDetailsScreen from './src/screens/RestaurantDetailsScreen';
+import AddEditRestaurantScreen from './src/screens/AddEditRestaurantScreen';
+import MapScreen from './src/screens/MapScreen';
+import AboutScreen from './src/screens/AboutScreen';
+
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+    <NavigationContainer>
       <StatusBar style="auto" />
-    </View>
+      <Stack.Navigator 
+        initialRouteName="Splash"
+        screenOptions={{
+          headerShown: false, // Hide default headers, using custom ones
+        }}
+      >
+        <Stack.Screen 
+          name="Splash" 
+          component={SplashScreen} 
+        />
+        <Stack.Screen 
+          name="RestaurantList" 
+          component={RestaurantListScreen} 
+        />
+        <Stack.Screen 
+          name="RestaurantDetails" 
+          component={RestaurantDetailsScreen} 
+        />
+        <Stack.Screen 
+          name="AddEditRestaurant" 
+          component={AddEditRestaurantScreen} 
+        />
+        <Stack.Screen 
+          name="Map" 
+          component={MapScreen} 
+        />
+        <Stack.Screen 
+          name="About" 
+          component={AboutScreen} 
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
